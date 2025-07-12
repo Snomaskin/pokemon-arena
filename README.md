@@ -1,1 +1,3 @@
-Pokemom Arena
+Pokémon Arena
+
+Battle Pokémon
