@@ -4,15 +4,14 @@ import { PokemonClient } from "pokenode-ts";
 export interface Ability {
   name: string;
   description: string;
-}
-
+};
 export interface Pokemon {
   id: number;
   name: string;
   imageUrl: string;
   abilities: Ability[];
   hp: number;
-}
+};
 
 const api = new PokemonClient();
 
