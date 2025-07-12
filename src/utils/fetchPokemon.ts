@@ -1,36 +1,35 @@
-interface Ability {
+import { PokemonClient } from "pokenode-ts";
+
+
+export interface Ability {
   name: string;
   description: string;
-};
-interface Pokemon {
+}
+
+export interface Pokemon {
   id: number;
   name: string;
   imageUrl: string;
   abilities: Ability[];
   hp: number;
-};
+}
 
-const fetchPokemon = async (name: string): Promise<Pokemon> => {
-  const pokemonUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
-  const res = await fetch(pokemonUrl);
-  const data = await res.json();
+const api = new PokemonClient();
 
-  const imageUrl = data.sprites.other["official-artwork"].front_default;
-  const hp = data.stats.find((s: any) => s.stat.name === "hp")?.base_stat ?? 0;
-    const abilities: Ability[] = await Promise.all(
-    data.abilities.map(async (abilityObj: any) => {
-      const name = abilityObj.ability.name;
-      const url = abilityObj.ability.url;
+export const fetchPokemon = async (name: string): Promise<Pokemon> => {
+  const data = await api.getPokemonByName(name);
 
-      const abilityRes = await fetch(url);
-      const abilityData = await abilityRes.json();
+  const imageUrl = data.sprites.other?.["official-artwork"]?.front_default ?? "";
+  const hp = data.stats.find((s) => s.stat.name === "hp")?.base_stat ?? 0;
 
+  const abilities: Ability[] = await Promise.all(
+    data.abilities.map(async ({ ability }) => {
+      const abilityData = await api.getAbilityByName(ability.name);
       const description =
-        abilityData.effect_entries.find((entry: any) => entry.language.name === "en")?.effect ??
+        abilityData.effect_entries.find((entry) => entry.language.name === "en")?.effect ??
         "No description available.";
-
       return {
-        name,
+        name: ability.name,
         description,
       };
     })
@@ -41,8 +40,6 @@ const fetchPokemon = async (name: string): Promise<Pokemon> => {
     name: data.name,
     imageUrl,
     abilities,
-    hp
+    hp,
   };
 };
-
-export {type Pokemon, fetchPokemon};
