@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import { Pokemon } from "@/utils/fetchPokemon";
 import Image from "next/image";
