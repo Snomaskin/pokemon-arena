@@ -1,7 +1,7 @@
 "use client";
-import PokemonSelectorGrid from "./components/PokemonSelectorGrid";
+import PokemonSelectorGrid from "./PokemonSelectorGrid";
 import { type Pokemon, fetchPokemon } from "@/utils/fetchPokemon";
-import pokemonSelection from "./data/pokemonSelection";
+import pokemonSelection from "@/data/pokemonSelection";
 import { useEffect, useState } from "react";
 
 

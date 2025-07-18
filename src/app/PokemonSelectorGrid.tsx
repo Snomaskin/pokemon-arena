@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Pokemon } from "@/utils/fetchPokemon";
 import Image from "next/image";
-import PokemonCard from "./PokemonCard";
+import PokemonCard from "@/components/PokemonCard";
 
 
 export default function PokemonSelectorGrid({ pokemons }: { pokemons: Pokemon[] }) {
