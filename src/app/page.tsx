@@ -1,25 +1,15 @@
-"use client";
-import PokemonSelectorGrid from "./PokemonSelectorGrid";
-import { type Pokemon, fetchPokemon } from "@/utils/fetchPokemon";
-import pokemonSelection from "@/data/pokemonSelection";
-import { useEffect, useState } from "react";
+import { fetchPokemon } from "@/utils/fetchPokemon";
+import pokemonsArr from "@/data/pokemonsArr";
+import ClientShell from "./ClientShell";
 
 
-export default function Home() {
-  const [pokemons, setPokemons] = useState<Pokemon[]>();
-  useEffect(() => {
-
-    const fetchPokemons = async () => {
-      const promises = pokemonSelection.map(pokemon => fetchPokemon(pokemon));
-      const pokemons = await Promise.all(promises);
-      setPokemons(pokemons);
-    }
-    fetchPokemons();
-  }, [])
+export default async function Home() {
+  const promises = pokemonsArr.map(pokemon => fetchPokemon(pokemon));
+  const pokemons = await Promise.all(promises);
 
   return (
    <main className="flex w-screen min-h-screen bg-amber-100 justify-center">
-    {pokemons ? <PokemonSelectorGrid pokemons={pokemons} /> : <p>Loading...</p>}
+    {pokemons ? <ClientShell pokemons={pokemons} /> : <p>Loading...</p>}
    </main>
   );
 }

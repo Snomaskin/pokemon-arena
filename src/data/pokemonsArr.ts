@@ -1,4 +1,4 @@
-const pokemonSelection = [
+const pokemonsArr = [
   "pikachu",
   "clefairy",
   "bulbasaur",
@@ -53,4 +53,4 @@ const pokemonSelection = [
 
 
 
-export default pokemonSelection;
+export default pokemonsArr;
