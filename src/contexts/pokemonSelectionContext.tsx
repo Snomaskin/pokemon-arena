@@ -85,4 +85,4 @@ const usePokemonSelection = () => {
   return context;
 };
 
-export {type Team, PokemonSelectionProvider, usePokemonSelection };
+export {type Team, type PokemonSelectionType, PokemonSelectionProvider, usePokemonSelection };

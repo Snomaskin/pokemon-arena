@@ -1,6 +1,7 @@
 "use client"
 import { usePokemonSelection } from "@/contexts/pokemonSelectionContext";
 import StagingTeam from "./StagingTeam";
+import Link from "next/link";
 
 
 export default function PokemonStagingArea() {
@@ -17,6 +18,7 @@ export default function PokemonStagingArea() {
         >
           Reset
         </button>
+        <Link href={"/Arena"}>To Battle!</Link>
       </div>
       
       <div className="flex flex-col lg:flex-row gap-3">

@@ -13,6 +13,7 @@ export const fetchPokemon = async (name: string): Promise<Pokemon> => {
 
   const imageUrl = data.sprites.other?.["official-artwork"]?.front_default ?? "";
   const hp = data.stats.find((s) => s.stat.name === "hp")?.base_stat ?? 0;
+  const types = data.types.map(p => p.type.name);
 
   let imageBase64 = "";
   if (imageUrl) {
@@ -22,18 +23,34 @@ export const fetchPokemon = async (name: string): Promise<Pokemon> => {
     imageBase64 = `data:image/png;base64,${base64}`;
   };
 
+  const GEN_VERSION = "scarlet-violet";
+
+  const level1Moves = data.moves
+    .filter(({ version_group_details }) =>
+      version_group_details.some(
+        (detail) =>
+          detail.version_group.name === GEN_VERSION &&
+          detail.move_learn_method.name === "level-up" &&
+          detail.level_learned_at === 1
+      )
+    )
+    .map(({ move }) => move);
+
   const moves: Move[] = await Promise.all(
-    data.moves.map(async ({ move }) => {
+    level1Moves.map(async (move) => {
       const moveData = await moveApi.getMoveByName(move.name);
       const description =
         moveData.effect_entries.find((entry) => entry.language.name === "en")?.effect ??
         "No description available.";
+      const type = moveData.type.name;
+      const power = moveData.power;
       return {
         name: move.name,
         description,
+        type,
+        power,
       };
-    })
-  );
+    }))
 
   const pokemon: Pokemon = {
     id: data.id,
@@ -41,6 +58,7 @@ export const fetchPokemon = async (name: string): Promise<Pokemon> => {
     imageUrl: imageBase64,
     moves,
     hp,
+    types,
   };
   
   pokemonCache.set(name, pokemon);

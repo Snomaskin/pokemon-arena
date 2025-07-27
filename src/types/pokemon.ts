@@ -1,6 +1,8 @@
 interface Move {
   name: string;
   description: string;
+  type: string;
+  power: number | null;
 };
 interface Pokemon {
   id: number;
@@ -8,6 +10,7 @@ interface Pokemon {
   imageUrl: string;
   moves: Move[];
   hp: number;
+  types: string[];
 };
 
 export type { Move, Pokemon };
