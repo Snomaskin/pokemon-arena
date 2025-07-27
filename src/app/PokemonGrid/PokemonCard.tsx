@@ -2,6 +2,7 @@ import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import { type Team } from "@/contexts/pokemonSelectionContext";
 import { cardStyles } from "@/styles/teamStyles";
+import getTypeColor from "@/styles/getTypeColor";
 
 
 type Props = {
@@ -15,11 +16,11 @@ export default function PokemonCard({ pokemon, team, onClose, onSelect }: Props)
   const style = cardStyles[team];
 
   return (
-    <div className={`relative max-w-sm ${style.bg} ${style.border} border-2 rounded-xl shadow-2xl p-0 overflow-hidden`}>
+    <div className={`relative max-w-sm min-w-sm ${style.bg} ${style.border} border-4 rounded-xl overflow-hidden`}>
       <div className={`${style.headerBg} px-6 py-4 relative`}>
         <button
           onClick={() => onClose()}
-          className={`absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 ${style.closeHover} rounded-full text-xl font-bold leading-none cursor-pointer transition-colors duration-200`}
+          className={`absolute top-4 right-2 w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 ${style.closeHover} rounded-full text-xl font-bold cursor-pointer transition-colors duration-200`}
         >
           ×
         </button>
@@ -27,6 +28,9 @@ export default function PokemonCard({ pokemon, team, onClose, onSelect }: Props)
           <h2 className={`text-2xl font-bold ${style.accent} capitalize`}>
             {pokemon.name}
           </h2>
+          {pokemon.types.map((type, index) => (
+            <span key={index} className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(type)}`}>{type}</span>
+          ))}
           <div className={`${style.accent} font-bold text-lg bg-white/50 px-3 py-1 rounded-full`}>
             HP {pokemon.hp}
           </div>
@@ -51,13 +55,20 @@ export default function PokemonCard({ pokemon, team, onClose, onSelect }: Props)
         {pokemon.moves && pokemon.moves.length > 0 && (
           <div className="mb-6">
             <h3 className={`text-lg font-bold ${style.accent} mb-3`}>Attacks</h3>
-            <div className="space-y-3">
+            <div className="space-y-2 lg:space-y-3">
               {pokemon.moves.slice(0, 3).map(move => (
-                <div key={move.name} className="bg-white/60 rounded-lg p-3 border border-white/40">
-                  <h4 className={`font-bold ${style.accent} capitalize mb-1`}>
+                <div key={move.name} className="bg-white/60 rounded-lg p-2 border border-white/40">
+                  <h4 className={`flex items-center justify-between font-bold ${style.accent} capitalize mb-1`}>
                     {move.name}
+                    {move.type && (
+                      <span className={`mr-2 px-2 py-1 rounded-full text-xs font-medium lowercase ${getTypeColor(move.type)}`}>
+                        {move.type}
+                      </span>
+                    )}
                   </h4>
-                  <p className="text-sm line-clamp-4 text-gray-700 leading-relaxed">
+
+
+                  <p className="text-sm line-clamp-2 lg:line-clamp-4 text-gray-700 leading-relaxed">
                     {move.description}
                   </p>
                 </div>
