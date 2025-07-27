@@ -15,14 +15,6 @@ export const fetchPokemon = async (name: string): Promise<Pokemon> => {
   const hp = data.stats.find((s) => s.stat.name === "hp")?.base_stat ?? 0;
   const types = data.types.map(p => p.type.name);
 
-  let imageBase64 = "";
-  if (imageUrl) {
-    const response = await fetch(imageUrl);
-    const buffer = await response.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString("base64");
-    imageBase64 = `data:image/png;base64,${base64}`;
-  };
-
   const GEN_VERSION = "scarlet-violet";
 
   const level1Moves = data.moves
@@ -55,7 +47,7 @@ export const fetchPokemon = async (name: string): Promise<Pokemon> => {
   const pokemon: Pokemon = {
     id: data.id,
     name: data.name,
-    imageUrl: imageBase64,
+    imageUrl,
     moves,
     hp,
     types,
