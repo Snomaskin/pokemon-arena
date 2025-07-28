@@ -11,6 +11,7 @@ interface Pokemon {
   moves: Move[];
   hp: number;
   types: string[];
+  isDefeated?: boolean;
 };
 
 export type { Move, Pokemon };
