@@ -1,4 +1,4 @@
-import fetchPokemon from "@/utils/fetchPokemon";
+import fetchPokemon from "@/services/pokemon/fetchPokemon";
 import pokemonsArr from "@/data/pokemonsArr";
 import ClientShell from "./ClientShell";
 import { Pokemon } from "@/types/pokemon";
