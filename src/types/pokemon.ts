@@ -2,7 +2,7 @@ interface Move {
   name: string;
   description: string;
   type: string;
-  power: number | null;
+  power: number;
 };
 interface Pokemon {
   id: number;
