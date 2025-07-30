@@ -13,6 +13,8 @@ export default async function fetchPokemon(name: string): Promise<Pokemon> {
 
   const imageUrl = data.sprites.other?.["official-artwork"]?.front_default ?? "";
   const hp = data.stats.find((s) => s.stat.name === "hp")?.base_stat ?? 0;
+  const attack = data.stats.find(s => s.stat.name === "attack")?.base_stat ?? 0;
+  const defense = data.stats.find(s => s.stat.name === "defense")?.base_stat ?? 0;
   const types = data.types.map(p => p.type.name);
   const moves = await getMoves(data.moves);
 
@@ -22,6 +24,8 @@ export default async function fetchPokemon(name: string): Promise<Pokemon> {
     imageUrl,
     moves,
     hp,
+    attack,
+    defense,
     types,
   };
   

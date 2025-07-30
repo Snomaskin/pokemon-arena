@@ -10,6 +10,8 @@ interface Pokemon {
   imageUrl: string;
   moves: Move[];
   hp: number;
+  attack: number;
+  defense: number;
   types: string[];
   isDefeated?: boolean;
 };
