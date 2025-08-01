@@ -1,5 +1,6 @@
 "use client"
-import { type Team, usePokemonSelection } from "@/contexts/pokemonSelectionContext";
+import { usePokemonSelection } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { stagingStyles } from "@/styles/teamStyles";
 import PokemonList from "./PokemonList";
 

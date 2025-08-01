@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Team } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { Pokemon } from "@/types/pokemon";
 import { stagingListStyles } from "@/styles/teamStyles";
 import xIcon from "@/assets/close.png";

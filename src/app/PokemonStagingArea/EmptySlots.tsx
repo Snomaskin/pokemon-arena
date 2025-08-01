@@ -1,5 +1,5 @@
 import { stagingListStyles } from "@/styles/teamStyles";
-import { Team } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { Pokemon } from "@/types/pokemon";
 
 

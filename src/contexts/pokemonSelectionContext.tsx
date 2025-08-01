@@ -1,6 +1,7 @@
 "use client"
 import { createContext, useContext, useState, ReactNode } from "react";
 import type { Pokemon } from "@/types/pokemon";
+import { Team } from "@/types/team";
 
 
 interface PokemonSelectionContextType {
@@ -16,8 +17,6 @@ interface PokemonSelectionType {
   team1: Pokemon[];
   team2: Pokemon[];
 };
-
-type Team = "team1" | "team2";
 
 const PokemonSelectionContext = createContext<PokemonSelectionContextType | undefined>(undefined);
 

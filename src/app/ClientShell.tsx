@@ -18,7 +18,7 @@ export default function ClientShell({ pokemons }: {pokemons: Pokemon[]}) {
       setCachedPokemons(newPokemons);
     }; 
     updateCachedPokemons();
-  }, []);
+  }, [pokemons]);
 
   const hasPokemons = (selection.team1?.length ?? 0) > 0 || (selection.team2?.length ?? 0) > 0;
 

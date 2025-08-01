@@ -1,9 +1,24 @@
+"use client"
 import ArenaTeam from "./ArenaTeam";
+import AttackAnimationHandler from "./AttackAnimationHandler";
+import { useBattle } from "@/contexts/battleContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 
 export default function Arena() {
+  const { winner } = useBattle();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (winner) {
+      console.log(winner)
+     router.push("/Arena/BattleConclusion")
+    }
+  }, [winner, router]);
 
   return (
+    
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-200 p-4">
       
       <div className="text-center mb-8">
@@ -37,6 +52,7 @@ export default function Arena() {
         <ArenaTeam team="team2"/>
 
       </div>
+      <AttackAnimationHandler />
     </div>
   );
 }

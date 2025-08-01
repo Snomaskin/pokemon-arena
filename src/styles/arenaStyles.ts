@@ -10,7 +10,15 @@ const card = {
     border: "border-red-300 hover:border-red-400",
     healthBar: "bg-red-500",
     imageBg: "from-red-100 to-red-200"
-  }
+  },
+  isDefeated: {
+    bg: "bg-gradient-to-br from-gray-200 to-gray-300",
+    border: "border-gray-400",
+    healthBar: "bg-gray-400",
+    imageBg: "from-gray-300 to-gray-400",
+    overlay: "bg-black bg-opacity-10",
+    filter: "grayscale(100%) brightness(50%)"
+  },
 };
 
 const moves = {

@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
 import PokemonCard from "./PokemonCard";
-import { type Team, usePokemonSelection } from "@/contexts/pokemonSelectionContext";
+import { usePokemonSelection } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { selectionStyles } from "@/styles/teamStyles";
 import Modal from "@/components/Modal";
 

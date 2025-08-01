@@ -1,6 +1,6 @@
 import { Pokemon } from "@/types/pokemon";
 import Image from "next/image";
-import { type Team } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { cardStyles } from "@/styles/teamStyles";
 import getTypeColor from "@/styles/getTypeColor";
 

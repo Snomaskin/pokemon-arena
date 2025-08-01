@@ -1,21 +1,24 @@
 import { useBattle } from "@/contexts/battleContext";
-import { Move, Pokemon } from "@/types/pokemon";
+import { Move } from "@/types/pokemon";
 import calculateDamage from "./calculateDamage";
-import { Team } from "@/contexts/pokemonSelectionContext";
+import { Team, PokemonOfTeam } from "@/types/team";
 
-
-type PokemonOfTeam = {
-  team: Team,
-  pokemon: Pokemon,
-};
 
 export default function useBattleEngine() {
-  const { currentTurn, setCurrentTurn, updatePokemonHp } = useBattle();
+  const { currentTurn, setCurrentTurn, updatePokemonHp, setAttackAnimation } = useBattle();
 
-  const executeMove = (attacker: PokemonOfTeam, defender: PokemonOfTeam, move: Move) => {
-    const damage = calculateDamage(attacker.pokemon, defender.pokemon, move);
-    updatePokemonHp(defender.pokemon, defender.team, - damage);
-    setCurrentTurn(switchTeam(currentTurn));
+  const executeMove = (attacker: PokemonOfTeam, target: PokemonOfTeam, move: Move) => {
+    setAttackAnimation({
+      attacker: {team: attacker.team, pokemon: attacker.pokemon},
+      target: {team: target.team, pokemon: target.pokemon},
+      move,
+    });
+    setTimeout(() => {
+      const damage = calculateDamage(attacker.pokemon, target.pokemon, move);
+      updatePokemonHp(target.pokemon, target.team, - damage);
+      setCurrentTurn(switchTeam(currentTurn));
+    }, 1000)
+
   };
 
   return { executeMove };

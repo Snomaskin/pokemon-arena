@@ -1,18 +1,23 @@
 import { Pokemon, Move } from "@/types/pokemon";
 import { motion } from "framer-motion";
 import getTypeColor from "../../styles/getTypeColor";
-import { Team } from "@/contexts/pokemonSelectionContext";
+import { Team } from "@/types/team";
 import { moves } from "@/styles/arenaStyles";
+import { useBattle } from "@/contexts/battleContext";
 
 
 type Props = {
   pokemon: Pokemon;
   team: Team;
   onClose: () => void;
-  onMoveSelect: (move: Move) => void;
 };
-export default function MovesPopup({ pokemon, team, onClose, onMoveSelect }: Props) {
+export default function MovesPopup({ pokemon, team, onClose }: Props) {
   const styles = moves[team];
+    const { setMoveSelectedFor } = useBattle();
+
+  const handleMoveSelect = (move: Move) => {
+    setMoveSelectedFor({team, pokemon, move});
+  };
 
   return (
     <motion.div
@@ -30,7 +35,7 @@ export default function MovesPopup({ pokemon, team, onClose, onMoveSelect }: Pro
             className={`w-full text-left text-sm p-3 rounded-lg mb-2 border 
               ${styles.hover} transition-colors duration-150 cursor-pointer`}
             onClick={() => {
-              onMoveSelect(move);
+              handleMoveSelect(move);
               onClose();
             }}
           >

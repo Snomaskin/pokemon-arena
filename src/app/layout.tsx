@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { PokemonSelectionProvider } from "@/contexts/pokemonSelectionContext";
+import { BattleProvider } from "@/contexts/battleContext";
 import "@/styles/globals.css";
 
 
@@ -30,7 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <PokemonSelectionProvider>
-          {children}
+          <BattleProvider>
+            {children}
+          </BattleProvider>
         </PokemonSelectionProvider>
       </body>
     </html>
