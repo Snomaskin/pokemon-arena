@@ -8,6 +8,7 @@ import { PokemonOfTeam, Team } from "@/types/team";
 interface BattleContextType {
   arenaTeams: ArenaTeams;
   getTeamPokemons: (team: Team) => ArenaPokemon[];
+  findPokemonInTeam: (pokemon: Pokemon, team: Team) => ArenaPokemon | undefined;
   currentTurn: Team;
   setCurrentTurn: React.Dispatch<Team>;
   moveSelectedFor: SelectedMoveForTeam | undefined;
@@ -18,6 +19,8 @@ interface BattleContextType {
   attackAnimationData: AttackAnimationData | null;
   setAttackAnimationData: React.Dispatch<AttackAnimationData | null>;
   getPokemonHp: (pokemon: Pokemon, team: Team) => number;
+  setHasMoved: (pokemon: Pokemon, team: Team, hasMoved: boolean) => void;
+  resetTeamHasMoved: (team: Team) => void;
   getIsDefeated: (pokemon: Pokemon, team: Team) => boolean | undefined;
   winner: Team | undefined;
   setWinner: React.Dispatch<Team | undefined>;
@@ -78,8 +81,8 @@ function BattleProvider({ children }: { children: ReactNode }) {
     return arenaTeams[team];
   };
 
-  const findPokemonInTeam = (pokemon: Pokemon, arr: ArenaPokemon[]) => {
-    const foundPokemon = arr.find(p => p.id === pokemon.id);
+  const findPokemonInTeam = (pokemon: Pokemon, team: Team) => {
+    const foundPokemon = arenaTeams[team].find(p => p.id === pokemon.id);
     if (foundPokemon) {
       return foundPokemon
     } else {
@@ -88,38 +91,47 @@ function BattleProvider({ children }: { children: ReactNode }) {
   };
 
   const updatePokemonHp = (pokemon: Pokemon, team: Team, hpChange: number) => {
-    setArenaTeams(prev => {
-      const affectedTeamSelection = prev[team];
-      const affectedPokemon = findPokemonInTeam(pokemon, affectedTeamSelection);
-      if (affectedPokemon){
-
-        const newHp = Math.max(0, affectedPokemon.hp + hpChange);
-        const updatedPokemon = {
-          ...affectedPokemon, 
-          hp: newHp, 
-          isDefeated: newHp <= 0,
-          cardRef: affectedPokemon.cardRef,
-        };
-
-        const updatedSelection = affectedTeamSelection.map(p => p.id === affectedPokemon.id ? updatedPokemon : p);
-        return {...prev, [team]: updatedSelection};
-      } else {
-        console.log("Failed to deal damage.")
-        return prev;
-      }
-    });
+    const affectedPokemon = findPokemonInTeam(pokemon, team);
+    if (affectedPokemon) {
+      const newHp = Math.max(0, affectedPokemon.hp + hpChange);
+      const updatedPokemon = {
+        ...affectedPokemon, 
+        hp: newHp, 
+        isDefeated: newHp <= 0,
+      };
+      updateArenaTeamPokemon(pokemon, team, updatedPokemon);
+    };
   };
 
   const getPokemonHp = (pokemon: Pokemon, team: Team) => {
-    const selectedPokemon = findPokemonInTeam(pokemon, arenaTeams[team]);
+    const selectedPokemon = findPokemonInTeam(pokemon, team);
     return selectedPokemon ? selectedPokemon.hp : pokemon.hp;
   };
 
-  const setCardRef = (pokemon: Pokemon, team: Team, ref: React.RefObject<HTMLDivElement | null>) => {
+  const setHasMoved = (pokemon: Pokemon, team: Team, hasMoved: boolean) => {
+    updateArenaTeamPokemon(pokemon, team, {hasMoved: hasMoved})
+  };
+
+  const resetTeamHasMoved = (team: Team) => {
+    console.table(arenaTeams)
     setArenaTeams(prev => {
-      const selectedPokemon = findPokemonInTeam(pokemon, prev[team]);
+      const updatedTeam = prev[team].map(pokemon => ({
+        ...pokemon,
+        hasMoved: pokemon.isDefeated ? true : false
+      }));
+      return { ...prev, [team]: updatedTeam };
+    });
+  };
+  
+  const setCardRef = (pokemon: Pokemon, team: Team, ref: React.RefObject<HTMLDivElement | null>) => {
+    updateArenaTeamPokemon(pokemon, team, {cardRef: ref})
+  };
+
+  const updateArenaTeamPokemon = (pokemon: Pokemon, team: Team, updates: Partial<ArenaPokemon>) => {
+     setArenaTeams(prev => {
+      const selectedPokemon = prev[team].find(p => p.id === pokemon.id);
       if (selectedPokemon) {
-        const updatedPokemon: ArenaPokemon = {...selectedPokemon, cardRef: ref};
+        const updatedPokemon: ArenaPokemon = {...selectedPokemon, ...updates};
         const updatedSelection = prev[team].map(p => p.id === updatedPokemon.id ? updatedPokemon : p);
         return {...prev, [team]: updatedSelection};
       } else {
@@ -129,7 +141,7 @@ function BattleProvider({ children }: { children: ReactNode }) {
   };
 
   const getCardRef = (pokemon: Pokemon, team: Team) => {
-    const selectedPokemon = findPokemonInTeam(pokemon, arenaTeams[team]);
+    const selectedPokemon = findPokemonInTeam(pokemon, team);
     if (selectedPokemon?.cardRef) {
       return selectedPokemon.cardRef;
     } else {
@@ -139,7 +151,7 @@ function BattleProvider({ children }: { children: ReactNode }) {
   };
 
   const getIsDefeated = (pokemon: Pokemon, team: Team) => {
-    const selectedPokemon = findPokemonInTeam(pokemon, arenaTeams[team]);
+    const selectedPokemon = findPokemonInTeam(pokemon, team);
     return selectedPokemon?.isDefeated
   };
 
@@ -160,6 +172,7 @@ function BattleProvider({ children }: { children: ReactNode }) {
       value={{
         arenaTeams,
         getTeamPokemons,
+        findPokemonInTeam,
         currentTurn,
         setCurrentTurn,
         moveSelectedFor,
@@ -168,6 +181,8 @@ function BattleProvider({ children }: { children: ReactNode }) {
         getCardRef,
         updatePokemonHp,
         getPokemonHp,
+        setHasMoved,
+        resetTeamHasMoved,
         getIsDefeated,
         attackAnimationData,
         setAttackAnimationData,

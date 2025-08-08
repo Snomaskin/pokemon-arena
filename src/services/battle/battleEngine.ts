@@ -5,9 +5,13 @@ import { Team, PokemonOfTeam } from "@/types/team";
 
 
 export default function useBattleEngine() {
-  const { currentTurn, setCurrentTurn, updatePokemonHp, setAttackAnimationData } = useBattle();
+  const { currentTurn, setCurrentTurn, updatePokemonHp, setAttackAnimationData, findPokemonInTeam, getTeamPokemons, setHasMoved, resetTeamHasMoved } = useBattle();
 
   const executeMove = (attacker: PokemonOfTeam, target: PokemonOfTeam, move: Move) => {
+    const arenaPokemon = findPokemonInTeam(attacker.pokemon, attacker.team);
+
+    if (arenaPokemon?.hasMoved) return "Can only move once per turn. Try another Pokemon.";
+
     setAttackAnimationData({
       attacker: {team: attacker.team, pokemon: attacker.pokemon},
       target: {team: target.team, pokemon: target.pokemon},
@@ -16,7 +20,18 @@ export default function useBattleEngine() {
     setTimeout(() => {
       const damage = calculateDamage(attacker.pokemon, target.pokemon, move);
       updatePokemonHp(target.pokemon, target.team, - damage);
-      setCurrentTurn(switchTeam(currentTurn));
+      setHasMoved(attacker.pokemon, attacker.team, true);
+      const teamPokemons = getTeamPokemons(attacker.team);
+      const teamHasMoved = teamPokemons.every(p => 
+        p.id === attacker.pokemon.id || p.hasMoved
+      );
+
+      if (teamHasMoved) {
+        setCurrentTurn(switchTeam(currentTurn));
+        resetTeamHasMoved(attacker.team);
+        resetTeamHasMoved(target.team);
+
+      }
     }, 2000)
 
   };
