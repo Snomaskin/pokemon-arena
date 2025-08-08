@@ -1,6 +1,6 @@
 import { Pokemon, Move } from "@/types/pokemon";
 import { motion } from "framer-motion";
-import getTypeColor from "../../styles/getTypeColor";
+import getTypeColor from "@/styles/getTypeColor";
 import { Team } from "@/types/team";
 import { moves } from "@/styles/arenaStyles";
 import { useBattle } from "@/contexts/battleContext";
@@ -10,8 +10,9 @@ type Props = {
   pokemon: Pokemon;
   team: Team;
   onClose: () => void;
+  isOfFirstThree: boolean;
 };
-export default function MovesPopup({ pokemon, team, onClose }: Props) {
+export default function MovesPopup({ pokemon, team, onClose, isOfFirstThree }: Props) {
   const styles = moves[team];
     const { setMoveSelectedFor } = useBattle();
 
@@ -25,8 +26,8 @@ export default function MovesPopup({ pokemon, team, onClose }: Props) {
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9, y: team === "team1" ? -10 : 10 }}
       transition={{ duration: 0.2 }}
-      className={`absolute ${styles.placement} left-1/2 -translate-x-1/2 w-64 z-[100]
-        rounded-xl shadow-xl border ${styles.bg} ${styles.border}`}
+      className={`absolute ${styles.placement} ${isOfFirstThree ? "-left-1/6" : "-right-1/6"} lg:left-1/2 lg:-translate-x-1/2 md:translate-y-0 w-64 z-[200]
+        scale-75 md:scale-none rounded-xl shadow-xl border ${styles.bg} ${styles.border}`}
     >
       <div className="p-3 max-h-64 overflow-y-auto">
         {pokemon.moves?.map((move, index) => (

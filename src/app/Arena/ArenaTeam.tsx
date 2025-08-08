@@ -1,5 +1,5 @@
 "use client"
-import PokemonCard from "./PokemonCard";
+import PokemonCard from "./ArenaCard";
 import { Team } from "@/types/team";
 import { usePokemonSelection } from "@/contexts/pokemonSelectionContext";
 import { motion } from "framer-motion";
@@ -42,7 +42,7 @@ function TeamGrid({ team, canMove }: { team: Team, canMove: boolean }) {
     >
       {pokemons.map((pokemon) => (
         <PokemonCard 
-          key={pokemon.id}
+          key={pokemon.id + team}
           pokemon={pokemon}
           team={team}
           canMove={canMove}
@@ -55,7 +55,7 @@ function TeamGrid({ team, canMove }: { team: Team, canMove: boolean }) {
 function CurrentTeamOverlay({ children }: { children: ReactNode }) {
   return (
     <motion.div
-      className="relative bg-amber-200/70 px-4 py-8 rounded-2xl z-[100]"
+      className="relative bg-amber-200/70 px-6 md:py-10 rounded-2xl z-[100]"
       animate={{
         scale: [1, 1.03, 1],
         opacity: [1, 0.95, 1],

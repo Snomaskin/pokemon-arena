@@ -27,14 +27,14 @@ const moves = {
     border: "border-blue-300 hover:border-blue-400",
     text: "text-blue-800",
     hover: "hover:bg-blue-50",
-    placement: "top-full mt-2",
+    placement: "top-full mt-1 lg:mt-2 -translate-y-5/12",
   }, 
   team2:  {
     bg: "bg-white/90 border-red-300",
     border: "border-red-300 hover:border-red-400",
     text: "text-red-800",
     hover: "hover:bg-red-50",
-    placement: "bottom-full mb-2",
+    placement: "bottom-full mb-2 translate-y-2/6",
   }
 };
 

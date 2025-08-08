@@ -15,15 +15,17 @@ interface BattleContextType {
   setCardRef: (pokemon: Pokemon, team: Team, ref: React.RefObject<HTMLDivElement | null>) => void;
   getCardRef: (pokemon: Pokemon, team: Team) => React.RefObject<HTMLDivElement | null> | undefined;
   updatePokemonHp: (pokemon: Pokemon, team: Team, hpChange: number) => void;
-  attackAnimation: AttackAnimation | null;
-  setAttackAnimation: React.Dispatch<AttackAnimation | null>;
+  attackAnimationData: AttackAnimationData | null;
+  setAttackAnimationData: React.Dispatch<AttackAnimationData | null>;
   getPokemonHp: (pokemon: Pokemon, team: Team) => number;
   getIsDefeated: (pokemon: Pokemon, team: Team) => boolean | undefined;
   winner: Team | undefined;
   setWinner: React.Dispatch<Team | undefined>;
+  resetBattle: () => void;
 };
 interface ArenaPokemon extends Pokemon {
   cardRef?: React.RefObject<HTMLDivElement | null>;
+  hasMoved?: boolean;
 };
 interface ArenaTeams {
   team1: ArenaPokemon[];
@@ -34,7 +36,7 @@ interface SelectedMoveForTeam {
   pokemon: Pokemon;
   move: Move;
 };
-export interface AttackAnimation {
+interface AttackAnimationData {
   attacker: PokemonOfTeam;
   target: PokemonOfTeam;
   move: Move;
@@ -50,7 +52,7 @@ function BattleProvider({ children }: { children: ReactNode }) {
   });
   const [currentTurn, setCurrentTurn] = useState<Team>("team1");
   const [moveSelectedFor, setMoveSelectedFor] = useState<SelectedMoveForTeam | undefined>();
-  const [attackAnimation, setAttackAnimation] = useState<AttackAnimation | null>(null);
+  const [attackAnimationData, setAttackAnimationData] = useState<AttackAnimationData | null>(null);
   const [winner, setWinner] = useState<Team | undefined>(undefined);
 
   useEffect(() => {
@@ -70,11 +72,19 @@ function BattleProvider({ children }: { children: ReactNode }) {
 
     if (team1Defeated) setWinner("team2");
     if (team2Defeated) setWinner("team1");
-
   }, [arenaTeams]);
 
   const getTeamPokemons = (team: Team) => {
     return arenaTeams[team];
+  };
+
+  const findPokemonInTeam = (pokemon: Pokemon, arr: ArenaPokemon[]) => {
+    const foundPokemon = arr.find(p => p.id === pokemon.id);
+    if (foundPokemon) {
+      return foundPokemon
+    } else {
+      console.warn("Pokemon not found")
+    }
   };
 
   const updatePokemonHp = (pokemon: Pokemon, team: Team, hpChange: number) => {
@@ -131,7 +141,19 @@ function BattleProvider({ children }: { children: ReactNode }) {
   const getIsDefeated = (pokemon: Pokemon, team: Team) => {
     const selectedPokemon = findPokemonInTeam(pokemon, arenaTeams[team]);
     return selectedPokemon?.isDefeated
-  }
+  };
+
+  const resetBattle = () => {
+    setArenaTeams({
+      team1: selection.team1,
+      team2: selection.team2,
+    });
+    setCurrentTurn("team1");
+    setWinner(undefined);
+    setAttackAnimationData(null);
+    setMoveSelectedFor(undefined);
+  };
+
 
   return (
     <BattleContext.Provider
@@ -147,24 +169,16 @@ function BattleProvider({ children }: { children: ReactNode }) {
         updatePokemonHp,
         getPokemonHp,
         getIsDefeated,
-        attackAnimation,
-        setAttackAnimation,
+        attackAnimationData,
+        setAttackAnimationData,
         winner,
         setWinner,
+        resetBattle,
       }}
     >
       {children}
     </BattleContext.Provider>
   );
-};
-
-const findPokemonInTeam = (pokemon: Pokemon, arr: ArenaPokemon[]) => {
-  const foundPokemon = arr.find(p => p.id === pokemon.id);
-  if (foundPokemon) {
-    return foundPokemon
-  } else {
-    console.warn("Pokemon not found")
-  }
 };
 
 const useBattle = () => {
@@ -175,4 +189,4 @@ const useBattle = () => {
   return context;
 };
 
-export {BattleProvider, useBattle}
+export {BattleProvider, useBattle, type AttackAnimationData}

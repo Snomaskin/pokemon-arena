@@ -1,7 +1,7 @@
 import { Pokemon } from "@/types/pokemon";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
-import getTypeColor from "../../styles/getTypeColor";
+import getTypeColor from "@/styles/getTypeColor";
 import MovesPopup from "./MovesPopup";
 import { card } from "@/styles/arenaStyles";
 import { Team } from "@/types/team";
@@ -9,6 +9,8 @@ import { AnimatePresence } from "framer-motion";
 import { useBattle } from "@/contexts/battleContext";
 import { type TeamStyles } from "@/types/teamStylesType";
 import useBattleEngine from "@/services/battle/battleEngine";
+import PokemonSpeak from "./PokemonSpeak";
+import TargetArrow from "./TargetArrow";
 
 
 type Props = {
@@ -22,7 +24,8 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
   const [showMoves, setShowMoves] = useState<Pokemon | null>(null);
   const { moveSelectedFor, setMoveSelectedFor } = useBattle();
   const { executeMove } = useBattleEngine();
-  const { setCardRef, getIsDefeated } = useBattle();
+  const { setCardRef, getIsDefeated, arenaTeams } = useBattle();
+  const isOfFirstThreePokemon = arenaTeams[team].findIndex(p => p.id === pokemon.id) <= 2;
 
   const isDefeated = getIsDefeated(pokemon, team);
 
@@ -72,10 +75,12 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
       ref={cardRef}
       className={"relative"}
     >
+      {(moveSelectedFor?.team === team && moveSelectedFor.pokemon === pokemon) && <PokemonSpeak text="Select  target!" isOfFirstThree={isOfFirstThreePokemon} />}
+      {(moveSelectedFor && moveSelectedFor?.team !== team && !isDefeated) && <TargetArrow />}
       <div
-        className={`lg:min-w-35 sm:max-w-30 ${showMoves ? "ring-4 ring-yellow-400" : ""} ${styles.bg} ${styles.border}
-          rounded-xl p-4 border-2 shadow-lg ${!isDefeated ? "hover:shadow-xl cursor-pointer hover:scale-105" : "cursor-not-allowed opacity-75"}
-          transition-all duration-200 transform`}
+        className={`relative scale-60 md:scale-none lg:min-w-35 max-w-30 lg:max-w-none ${showMoves ? "ring-4 ring-yellow-400" : ""} ${styles.bg} ${styles.border}
+          rounded-xl p-4 border-2 shadow-lg ${!isDefeated ? "hover:shadow-xl cursor-pointer hover:scale-65 md:hover:scale-105" : "cursor-not-allowed opacity-75"}
+          duration-200 hover:z-[200]`}
         onClick={() => handlePokemonClick()}
       >
 
@@ -122,6 +127,7 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
             pokemon={pokemon}
             team={team}
             onClose={closeMoves}
+            isOfFirstThree={isOfFirstThreePokemon}
           />
         )}
       </AnimatePresence>

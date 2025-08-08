@@ -5,7 +5,7 @@ import { useBattle } from "@/contexts/battleContext"
 
 
 export default function BattleConculsion() {
-  const { setWinner } = useBattle();
+  const { resetBattle } = useBattle();
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-400 via-orange-400 to-red-500 flex flex-col items-center justify-center p-4">
       <div className="max-w-4xl w-full text-center">
@@ -28,7 +28,7 @@ export default function BattleConculsion() {
           <Link 
             className="group relative py-4 px-8 lg:py-5 lg:px-10 text-lg lg:text-xl font-bold text-white rounded-2xl bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105 hover:-translate-y-1 active:scale-95" 
             href={"/"}
-            onClick={() => setWinner(undefined)}
+            onClick={() => resetBattle()}
           >
             <span className="relative z-10">
               ⚔️ Battle Again!

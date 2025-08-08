@@ -5,10 +5,10 @@ import { Team, PokemonOfTeam } from "@/types/team";
 
 
 export default function useBattleEngine() {
-  const { currentTurn, setCurrentTurn, updatePokemonHp, setAttackAnimation } = useBattle();
+  const { currentTurn, setCurrentTurn, updatePokemonHp, setAttackAnimationData } = useBattle();
 
   const executeMove = (attacker: PokemonOfTeam, target: PokemonOfTeam, move: Move) => {
-    setAttackAnimation({
+    setAttackAnimationData({
       attacker: {team: attacker.team, pokemon: attacker.pokemon},
       target: {team: target.team, pokemon: target.pokemon},
       move,
@@ -17,7 +17,7 @@ export default function useBattleEngine() {
       const damage = calculateDamage(attacker.pokemon, target.pokemon, move);
       updatePokemonHp(target.pokemon, target.team, - damage);
       setCurrentTurn(switchTeam(currentTurn));
-    }, 1000)
+    }, 2000)
 
   };
 
