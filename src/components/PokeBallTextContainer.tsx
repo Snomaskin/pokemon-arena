@@ -1,4 +1,4 @@
-export default function({ text }: { text?: string }) {
+export default function PokeBallTextContainer({ text }: { text?: string }) {
   return (
     <div className="flex items-center justify-center scale-70 lg:scale-none">
       <div className="group relative flex items-center justify-center w-20 h-20 rounded-full border-4 border-black shadow-lg font-bold overflow-hidden flex-shrink-0 hover:-translate-y-0.5 transition-hover duration-100">

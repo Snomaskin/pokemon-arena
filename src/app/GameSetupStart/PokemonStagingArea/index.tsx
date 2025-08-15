@@ -1,6 +1,6 @@
 import StagingTeam from "./StagingTeam";
 import Link from "next/link";
-import VS from "@/components/OrangeOvalTextCont";
+import VS from "@/components/OrangeOvalTextContainer";
 import PokeBallTextContainer from "@/components/PokeBallTextContainer";
 
 

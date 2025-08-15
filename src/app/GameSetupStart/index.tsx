@@ -3,7 +3,7 @@ import PokemonStagingArea from "./PokemonStagingArea";
 import PokemonGrid from "./PokemonGrid";
 import { usePokemonSelection, type GameMode } from "@/contexts/pokemonSelectionContext";
 import Loader from "@/components/Loader";
-import VS from "@/components/OrangeOvalTextCont";
+import VS from "@/components/OrangeOvalTextContainer";
 import PokemonArenaHeader from "@/components/PokemonArenaHeader";
 import Image from "next/image";
 import { misty, ashPikachuSitting, ashPikachuStanding, pokeComputer } from "@/assets/index";
