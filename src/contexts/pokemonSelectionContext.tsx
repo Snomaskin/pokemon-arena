@@ -2,9 +2,14 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import type { Pokemon } from "@/types/pokemon";
 import { Team } from "@/types/team";
+import pokemonWithBase64Img from '@/utils/pokemonWithBase64Img';
 
 
 interface PokemonSelectionContextType {
+  gameMode: GameMode | undefined;
+  setGameMode: React.Dispatch<React.SetStateAction<GameMode | undefined>>;
+  updateCachedPokemons: (pokemons: Pokemon[]) => void;
+  cachedPokemons: Pokemon[] | undefined;
   selection: PokemonSelectionType;
   updatePokemonSelection: (pokemon: Pokemon, team: Team) => void;
   selectedTeam: Team | null;
@@ -12,6 +17,8 @@ interface PokemonSelectionContextType {
   resetSelection: () => void;
   rmPokemon: (pokemon: Pokemon, team: Team) => void;
 };
+
+type GameMode = "playerVsPlayer" | "playerVsComputer"
 
 interface PokemonSelectionType {
   team1: Pokemon[];
@@ -21,11 +28,18 @@ interface PokemonSelectionType {
 const PokemonSelectionContext = createContext<PokemonSelectionContextType | undefined>(undefined);
 
 function PokemonSelectionProvider({ children }: { children: ReactNode }) {
+  const [gameMode, setGameMode] = useState<GameMode | undefined>();
+  const [cachedPokemons, setCachedPokemons] = useState<Pokemon[]>();
   const [selection, setSelection] = useState<PokemonSelectionType>({
     team1: [],
     team2: [],
   });
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+
+  const updateCachedPokemons = async (pokemons: Pokemon[]) => {
+    const newPokemons = await Promise.all(pokemons.map((p) => pokemonWithBase64Img(p)));
+    setCachedPokemons(newPokemons);
+  }; 
 
   const updatePokemonSelection = (pokemon: Pokemon, team: Team) => {
     setSelection(prev => {
@@ -42,7 +56,6 @@ function PokemonSelectionProvider({ children }: { children: ReactNode }) {
       };
     });
   };
-
 
   const resetSelection = () => {
     setSelection({ team1: [], team2: [] });
@@ -63,6 +76,10 @@ function PokemonSelectionProvider({ children }: { children: ReactNode }) {
   return (
     <PokemonSelectionContext.Provider
       value={{
+        gameMode,
+        setGameMode,
+        updateCachedPokemons,
+        cachedPokemons,
         selection,
         updatePokemonSelection,
         selectedTeam,
@@ -84,4 +101,4 @@ const usePokemonSelection = () => {
   return context;
 };
 
-export {type Team, type PokemonSelectionType, PokemonSelectionProvider, usePokemonSelection };
+export {type Team, type PokemonSelectionType, type GameMode, PokemonSelectionProvider, usePokemonSelection };

@@ -24,8 +24,9 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
   const [showMoves, setShowMoves] = useState<Pokemon | null>(null);
   const { moveSelectedFor, setMoveSelectedFor } = useBattle();
   const { executeMove } = useBattleEngine();
-  const { setCardRef, getIsDefeated, arenaTeams } = useBattle();
+  const { setCardRef, getIsDefeated, arenaTeams, getHasMoved } = useBattle();
   const isOfFirstThreePokemon = arenaTeams[team].findIndex(p => p.id === pokemon.id) <= 2;
+  const hasMoved = getHasMoved(pokemon, team);
 
   const isDefeated = getIsDefeated(pokemon, team);
 
@@ -52,8 +53,9 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
   }, [showMoves, setMoveSelectedFor]);
 
   const handlePokemonClick = () => {
-    if (isDefeated) return;
+    if (isDefeated || hasMoved) return;
 
+    // if Defending 
     if (moveSelectedFor && moveSelectedFor.team !== team) {
       const attacker = {team: moveSelectedFor.team, pokemon:moveSelectedFor.pokemon};
       const target = {team, pokemon};
@@ -61,7 +63,9 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
       executeMove(attacker, target, moveSelectedFor.move);
       setMoveSelectedFor(undefined);    
     };
-    if (canMove) {
+
+    // if Attacking 
+    if (canMove && !hasMoved) {
       setShowMoves(pokemon);
     };
   };
@@ -93,7 +97,7 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
               alt={pokemon.name}
               width={80}
               height={80}
-              className={`w-full h-full object-contain ${isDefeated ? 'filter grayscale brightness-50' : ''}`}
+              className={`w-full h-full object-contain ${(isDefeated || hasMoved) ? 'filter grayscale brightness-50' : ''}`}
             />
 
             {isDefeated && (

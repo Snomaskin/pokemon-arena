@@ -20,6 +20,7 @@ interface BattleContextType {
   setAttackAnimationData: React.Dispatch<AttackAnimationData | null>;
   getPokemonHp: (pokemon: Pokemon, team: Team) => number;
   setHasMoved: (pokemon: Pokemon, team: Team, hasMoved: boolean) => void;
+  getHasMoved: (pokemon: Pokemon, team: Team) => boolean | undefined;
   resetTeamHasMoved: (team: Team) => void;
   getIsDefeated: (pokemon: Pokemon, team: Team) => boolean | undefined;
   winner: Team | undefined;
@@ -112,6 +113,11 @@ function BattleProvider({ children }: { children: ReactNode }) {
     updateArenaTeamPokemon(pokemon, team, {hasMoved: hasMoved})
   };
 
+  const getHasMoved = (pokemon: Pokemon, team: Team) => {
+    const selectedPokemon = findPokemonInTeam(pokemon, team);
+    return selectedPokemon?.hasMoved;
+  };
+
   const resetTeamHasMoved = (team: Team) => {
     console.table(arenaTeams)
     setArenaTeams(prev => {
@@ -182,6 +188,7 @@ function BattleProvider({ children }: { children: ReactNode }) {
         updatePokemonHp,
         getPokemonHp,
         setHasMoved,
+        getHasMoved,
         resetTeamHasMoved,
         getIsDefeated,
         attackAnimationData,

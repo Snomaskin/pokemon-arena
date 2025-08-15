@@ -4,6 +4,7 @@ import AttackAnimationHandler from "./AttackAnimationHandler";
 import { useBattle } from "@/contexts/battleContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import PokemonArenaHeader from "@/components/PokemonArenaHeader";
 
 
 export default function Arena() {
@@ -18,21 +19,11 @@ export default function Arena() {
   }, [winner, router]);
 
   return (
-    
-    <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-200 p-4">
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-green-200">
       
-      <div className="text-center mb-8">
-        <h1 className="text-2xl sm:text-4xl font-bold text-gray-700 mb-2">
-          Pokémon Battle
-        </h1>
-        <div className="w-70 h-0.5 bg-amber-300 mx-auto"></div>
-      </div>
+      <PokemonArenaHeader />
 
-      <div className="flex flex-col items-center">
-
-        <h2 className="text-xl sm:text-2xl font-semibold text-blue-600 mb-4 text-center">
-          Team 1
-        </h2>
+      <div className="flex flex-col items-center mt-8 justify-center">
 
         <ArenaTeam team="team1" />
 
@@ -44,11 +35,6 @@ export default function Arena() {
           <div className="h-px bg-red-300 flex-1"></div>
         </div>
 
-
-        <h2 className="text-xl sm:text-2xl font-semibold text-red-600 mb-4 text-center">
-          Team 2
-        </h2>
-
         <ArenaTeam team="team2"/>
 
       </div>
@@ -56,3 +42,4 @@ export default function Arena() {
     </div>
   );
 }
+
