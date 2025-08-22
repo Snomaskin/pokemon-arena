@@ -23,16 +23,16 @@ export default function Arena() {
       
       <PokemonArenaHeader />
 
-      <div className="flex flex-col items-center mt-8 justify-center">
+      <div className="flex flex-col items-center h-screen justify-center">
 
         <ArenaTeam team="team1" />
 
         <div className="flex items-center justify-center m-8 w-full">
-          <div className="h-px bg-blue-300 flex-1"></div>
+          <div className="h-px bg-blue-300 flex-1" />
           <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white font-bold text-lg lg:text-xl px-4  py-2 rounded-full shadow-lg border-2 border-yellow-300">
             VS
           </div>
-          <div className="h-px bg-red-300 flex-1"></div>
+          <div className="h-px bg-red-300 flex-1" />
         </div>
 
         <ArenaTeam team="team2"/>

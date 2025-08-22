@@ -55,11 +55,11 @@ function GameModeSelect() {
       <div className="flex w-full h-full">
         
         <button
-          className="flex flex-col flex-1 group items-center justify-center text-2xl gap-10 font-bold text-green-900 bg-gradient-to-br from-red-50 to-red-500
+          className="flex flex-col flex-1 group items-center justify-center text-2xl gap-6 lg:gap-10 font-bold text-green-900 bg-gradient-to-br from-red-50 to-red-500
                     shadow-inner hover:from-green-200 hover:to-green-300 hover:shadow-lg transition-colors duration-300 cursor-pointer"
           onClick={() => setGameMode("playerVsPlayer")}
         >
-          <div className="flex bg-white w-40 h-40 rounded-full items-center justify-center p-4 border shadow-2xl">
+          <div className="flex bg-white scale-70 lg:scale-100 w-40 h-40  rounded-full items-center justify-center p-4 border shadow-2xl">
             <Image
               src={ashPikachuSitting}
               alt="Human"
@@ -69,7 +69,7 @@ function GameModeSelect() {
           </div>
           <h2>Human</h2>
            <VS text="VS"/> 
-          <div className="flex bg-white w-40 h-40 rounded-full items-center justify-center p-4 border shadow-2xl">
+          <div className="flex bg-white scale-70 lg:scale-100 w-40 h-40 rounded-full items-center justify-center p-4 border shadow-2xl">
             <Image
               src={misty}
               alt="Human"
@@ -87,11 +87,12 @@ function GameModeSelect() {
           className="group relative flex flex-1 flex-col items-center justify-center gap-10 text-2xl font-bold text-indigo-900 bg-gradient-to-br
                    from-gray-100 to-white shadow-inner hover:from-indigo-200 hover:to-indigo-300 hover:shadow-lg transition-all duration-300"
         >
-          <div className="flex flex-col items-center gap-10 group-hover:opacity-0 transition-opacity duration-500">
+          <div className="flex flex-col items-center gap-6 lg:gap-10 group-hover:opacity-0 transition-opacity duration-500">
             <Image
               src={ashPikachuStanding}
               alt="Human"
               width={120}
+              className="scale-70 lg:scale-100"
             />   
             <h2>Human</h2>
             <VS text="VS" />
@@ -99,6 +100,7 @@ function GameModeSelect() {
               src={pokeComputer}
               alt="Computer"
               width={110}
+              className="scale-70 lg:scale-100"
             />   
             <h2>Computer</h2>
           </div>

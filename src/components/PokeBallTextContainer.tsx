@@ -8,7 +8,7 @@ export default function PokeBallTextContainer({ text }: { text?: string }) {
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white border-4 border-black group-hover:bg-gray-100">
 
-        <span className="relative text-m z-20 skew-y-2 p-1">{text}</span>
+        <span className="relative text-m text-black z-20 skew-y-2 p-1">{text}</span>
         </div>
       </div>
     </div>

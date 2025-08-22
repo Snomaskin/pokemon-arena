@@ -7,6 +7,7 @@ import { useBattle } from "@/contexts/battleContext";
 import { ReactNode } from "react";
 import { teamRocket, ashPikachuSitting } from "@/assets/index";
 import Image from "next/image";
+import SpeechBubble from "@/components/SpeechBubble";
 
 
 type Props = {
@@ -23,6 +24,7 @@ export default function ArenaTeam({ team }: Props) {
       className={`flex ${team === "team2" && "flex-row-reverse"}`}
     >
       <div className={`lg:flex hidden relative ${team === "team1" ? "-left-15" : "-right-15 mt-25"}  items-center justify-center z-[500] ${currentTurn === team ? "animate-bounce" : "animate-pulse"}`}>
+        <SpeechBubble text="test" arrowRight={team === "team1"} />
         <Image
           src={team === "team1" ? ashPikachuSitting : teamRocket}
           alt={team}
