@@ -23,7 +23,7 @@ export default function Arena() {
       
       <PokemonArenaHeader />
 
-      <div className="flex flex-col items-center h-screen justify-center">
+      <div className="flex flex-col items-center min-h-[calc(100vh-3.75rem)] justify-center">
 
         <ArenaTeam team="team1" />
 

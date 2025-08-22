@@ -9,7 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import { useBattle } from "@/contexts/battleContext";
 import { type TeamStyles } from "@/types/teamStylesType";
 import useBattleEngine from "@/services/battle/battleEngine";
-import PokemonSpeak from "./PokemonSpeak";
+import SpeechBubble from "@/components/SpeechBubble";
 import TargetArrow from "./TargetArrow";
 
 
@@ -79,7 +79,7 @@ export default function PokemonCard({ pokemon, team, canMove }: Props) {
       ref={cardRef}
       className={"relative"}
     >
-      {(moveSelectedFor?.team === team && moveSelectedFor.pokemon === pokemon) && <PokemonSpeak text="Select  target!" isOfFirstThree={isOfFirstThreePokemon} />}
+      {(moveSelectedFor?.team === team && moveSelectedFor.pokemon === pokemon) && <SpeechBubble text="Select  target!" arrowRight={isOfFirstThreePokemon} />}
       {(moveSelectedFor && moveSelectedFor?.team !== team && !isDefeated) && <TargetArrow />}
       <div
         className={`relative scale-60 md:scale-none lg:min-w-35 max-w-30 lg:max-w-none ${showMoves ? "ring-4 ring-yellow-400" : ""} ${styles.bg} ${styles.border}
