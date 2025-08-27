@@ -14,6 +14,9 @@ type Props = {
 };
 export default function ArenaTeam({ team }: Props) {
   const { currentTurn } = useBattle();
+  const { isHydrated } = usePokemonSelection();
+
+  if (!isHydrated) return null;
 
   return (
     <motion.div

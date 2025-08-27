@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import type { Pokemon } from "@/types/pokemon";
 import { Team } from "@/types/team";
 import pokemonWithBase64Img from '@/utils/pokemonWithBase64Img';
@@ -11,6 +11,7 @@ interface PokemonSelectionContextType {
   updateCachedPokemons: (pokemons: Pokemon[]) => void;
   cachedPokemons: Pokemon[] | undefined;
   selection: PokemonSelectionType;
+  isHydrated: boolean;
   updatePokemonSelection: (pokemon: Pokemon, team: Team) => void;
   selectedTeam: Team | null;
   setSelectedTeam: React.Dispatch<Team | null>;
@@ -30,11 +31,27 @@ const PokemonSelectionContext = createContext<PokemonSelectionContextType | unde
 function PokemonSelectionProvider({ children }: { children: ReactNode }) {
   const [gameMode, setGameMode] = useState<GameMode | undefined>();
   const [cachedPokemons, setCachedPokemons] = useState<Pokemon[]>();
-  const [selection, setSelection] = useState<PokemonSelectionType>({
-    team1: [],
-    team2: [],
-  });
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const [selection, setSelection] = useState<PokemonSelectionType>({ team1: [], team2: [] });
+
+  useEffect(() => {
+    setIsHydrated(true);
+    
+    const savedSelection = localStorage.getItem("pokemonSelection");
+    if (savedSelection) {
+
+        const parsed = JSON.parse(savedSelection);
+        setSelection(parsed);
+
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+      localStorage.setItem("pokemonSelection", JSON.stringify(selection));
+    }
+  }, [selection, isHydrated]);
 
   const updateCachedPokemons = async (pokemons: Pokemon[]) => {
     const newPokemons = await Promise.all(pokemons.map((p) => pokemonWithBase64Img(p)));
@@ -81,6 +98,7 @@ function PokemonSelectionProvider({ children }: { children: ReactNode }) {
         updateCachedPokemons,
         cachedPokemons,
         selection,
+        isHydrated,
         updatePokemonSelection,
         selectedTeam,
         setSelectedTeam,
