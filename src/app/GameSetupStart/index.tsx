@@ -52,7 +52,7 @@ function GameModeSelect() {
 
       <PokemonArenaHeader />
 
-      <div className="flex w-full h-full">
+      <div className="flex w-full min-h-[calc(100vh-3.75rem)] mt-15">
         
         <button
           className="flex flex-col flex-1 group items-center justify-center text-2xl gap-6 lg:gap-10 font-bold text-green-900 bg-gradient-to-br from-red-50 to-red-500

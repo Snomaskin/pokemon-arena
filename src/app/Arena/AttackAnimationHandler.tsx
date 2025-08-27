@@ -25,7 +25,7 @@ export default function AttackAnimationDataHandler() {
   const { attackAnimationData, getCardRef, setAttackAnimationData } = useBattle();
   const [projectile, setProjectile] = useState<Projectile | null>(null);
 
-  const createParticles = (moveType: string, count: number = 100) => {
+  const createParticles = (moveType: string, count: number = 60) => {
     const particleCount = moveType === 'electric' ? 40 : count;
     
     return Array.from({ length: particleCount }, (_, i) => ({
